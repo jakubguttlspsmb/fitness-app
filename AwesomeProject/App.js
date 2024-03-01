@@ -16,10 +16,7 @@ export default function App() {
       flex: 1,
       width: deviceWidth,
     },
-    container2: {
-      width: deviceWidth,
-      backgroundColor: "white",
-    },
+
   });
   return (
     <>

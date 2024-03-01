@@ -14,22 +14,31 @@ export default function FoodPage() {
   const [data, setData] = useState("");
   const [dataPerServing, setDataPerServing] = useState("");
   const [food, setFood] = useState("");
-  var deviceWidth = Dimensions.get("window").width;
+  const [deviceWidth, setDeviceWidth] = useState(Dimensions.get("window").width);
+  const [deviceHeight, setDeviceHeight] = useState(Dimensions.get("window").height);
+  const [flexdirection, setFlexdirection] = useState("row");
+  const [calories, setCalories] = useState(0);
 
   const handleFoodInputChange = (text) => {
     setFood(text);
   };
+
+  function addingData() {
+    if (data && data.nutrients && data.nutrients.ENERC_KCAL) {
+      setCalories(calories + data.nutrients.ENERC_KCAL);
+    }
+  }
+
   const fetchData = async () => {
     try {
-      searchInput = food;
       const response = await fetch(
-        `http://api.edamam.com/api/food-database/v2/parser?app_id=181e5eb4&app_key=0633a8e3dc27c8ba43caf5b67709cd32&ingr=${searchInput}&nutrition-type=cooking&181e5eb4=0633a8e3dc27c8ba43caf5b67709cd32`
+        `http://api.edamam.com/api/food-database/v2/parser?app_id=181e5eb4&app_key=0633a8e3dc27c8ba43caf5b67709cd32&ingr=${food}&nutrition-type=cooking&181e5eb4=0633a8e3dc27c8ba43caf5b67709cd32`
       );
       const jsonData = await response.json();
       setDataPerServing(jsonData);
       setData(jsonData.parsed[0].food);
     } catch (error) {
-      console.error("neni jidlo na seznamu zkus to zadat znovu");
+      console.error("There was an error fetching the data:", error);
     }
   };
 
@@ -37,63 +46,79 @@ export default function FoodPage() {
     container: {
       backgroundColor: "green",
       alignItems: "center",
-      justifyContent: "center",
-      flex: 1,
-      display: "inline",
       width: deviceWidth,
+      height: deviceHeight,
     },
     input: {
       borderWidth: 1,
       padding: 8,
-      marginTop: 10,
+      marginTop: 20,
       backgroundColor: "white",
       width: deviceWidth,
     },
-    Text: {
+    textLook: {
       color: "black",
     },
     button: {
       backgroundColor: "white",
       color: "black",
     },
-    /* image: {
-      width: 20,
-      height: 20,
-    },*/
+    fetchedFood: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: flexdirection,
+      width: deviceWidth,
+      backgroundColor: "white",
+    },
+    Button2: {
+      width: "33%",
+      height: "20%",
+      backgroundColor: "grey",
+    },
+    fetchedText: {
+      width: "33%",
+      height: "20%",
+    },
   });
+
   return (
     <>
       <View style={styles.container}>
         <TextInput
           style={styles.input}
           placeholder="Search for food"
-          onChangeText={(food) => handleFoodInputChange(food)}
+          onChangeText={handleFoodInputChange}
         />
         <Button
           style={styles.button}
           onPress={fetchData}
-          title="search"
-        ></Button>
-        <Text style={styles.Text}>
-          food you searched for{" "}
-          {dataPerServing.text && <Text>{dataPerServing.text}</Text>}
-        </Text>
-        <>
-          {/*       <Image source={{ uri: "./favicon.png" }} style={styles.image} />
-           */}
-        </>
-        {data && data.nutrients && (
-          <View>
-            <Text style={styles.Text}>Nutrients for 100g of food:</Text>
-            <Text style={styles.Text}>
-              ENERC_KCAL: {data.nutrients.ENERC_KCAL}
+          title="Search"
+        />
+        <View style={styles.fetchedFood}>
+          <View style={styles.fetchedText}>
+            <Text style={styles.textLook}>
+              Food you searched for:{" "}
+              {dataPerServing.text && <Text>{dataPerServing.text}</Text>}
             </Text>
-            <Text style={styles.Text}>PROCNT: {data.nutrients.PROCNT}</Text>
-            <Text style={styles.Text}>FAT: {data.nutrients.FAT}</Text>
-            <Text style={styles.Text}>CHOCDF: {data.nutrients.CHOCDF}</Text>
-            <Text style={styles.Text}>FIBTG: {data.nutrients.FIBTG}</Text>
+            {data && data.nutrients && (
+              <View>
+                <Text style={styles.textLook}>Nutrients for 100g of food:</Text>
+                <Text style={styles.textLook}>
+                  ENERC_KCAL: {data.nutrients.ENERC_KCAL || 'N/A'}
+                </Text>
+                <Text style={styles.textLook}>PROCNT: {data.nutrients.PROCNT || 'N/A'}</Text>
+                <Text style={styles.textLook}>FAT: {data.nutrients.FAT || 'N/A'}</Text>
+                <Text style={styles.textLook}>CHOCDF: {data.nutrients.CHOCDF || 'N/A'}</Text>
+                <Text style={styles.textLook}>FIBTG: {data.nutrients.FIBTG || 'N/A'}</Text>
+              </View>
+            )}
           </View>
-        )}
+          <Button style={styles.Button2} title="+" onPress={addingData} />
+        </View>
+        <View>
+          <Text>Todays nutritions: {calories}</Text>
+        </View>
       </View>
     </>
   );
