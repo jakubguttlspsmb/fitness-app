@@ -1,16 +1,14 @@
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TextInput,
-  Button,
   Dimensions,
-  AsyncStorage,
   TouchableHighlight,
 } from "react-native";
 import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 export default function FoodPage() {
   const [data, setData] = useState("");
@@ -35,7 +33,7 @@ export default function FoodPage() {
   };
 
   function addingData() {
-    if (data && data.nutrients /*&& data.nutrients.ENERC_KCAL*/) {
+    if (data && data.nutrients) {
       setCalories(calories + data.nutrients.ENERC_KCAL);
       setFats(fats + data.nutrients.FAT);
       setProteins(proteins + data.nutrients.PROCNT);
@@ -44,7 +42,7 @@ export default function FoodPage() {
     }
   }
   function removeData() {
-    if (data && data.nutrients /*&& data.nutrients.ENERC_KCAL*/) {
+    if (data && data.nutrients) {
       if (calories >= data.nutrients.ENERC_KCAL) {
         setCalories(calories - data.nutrients.ENERC_KCAL);
       }
@@ -82,7 +80,7 @@ export default function FoodPage() {
       const time = new Date().getTime();
       await AsyncStorage.setItem(
         key,
-        JSON.stringify({ calories, proteins, fats,fibers, carbs, time })
+        JSON.stringify({ calories, proteins, fats, fibers, carbs, time })
       );
     } catch (error) {
       "error pri ukladani", error;
@@ -115,28 +113,36 @@ export default function FoodPage() {
       backgroundColor: "white",
       width: deviceWidth,
       paddingTop: 8,
-      paddingBottom: 8
+      paddingBottom: 8,
+      borderRadius: 10,
+      fontWeight: "bold",
+      alignItems:"center",
+      justifyContent:"center"
     },
     textLook: {
       color: "white",
+      fontWeight: "bold",
     },
     button: {
-      backgroundColor: "#A4A4A4",
-      color: "black",
+      backgroundColor: "white",
       width: deviceWidth,
-      height: 30,
+      height: 35,
       alignItems: "center",
       justifyContent: "center",
+      borderRadius: 10,
+      marginTop: 5,
+
     },
     fetchedFood: {
       justifyContent: "space-between",
       alignItems: "center",
       flexDirection: flexdirection,
       width: deviceWidth,
-      backgroundColor: "#A4A4A4",
+      backgroundColor: "black",
       display: visible,
       height: "30%",
       marginTop: 20,
+      fontWeight: "bold",
     },
     Button2: {
       backgroundColor: "white",
@@ -144,9 +150,13 @@ export default function FoodPage() {
       width: "30%",
       justifyContent: "center",
       alignItems: "center",
-
     },
-    fetchedText: { color: "white" },
+    bottomIcons: {
+      flexDirection: flexdirection,
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    fetchedText: { color: "white", fontWeight: "bold" },
   });
 
   return (
@@ -158,7 +168,7 @@ export default function FoodPage() {
           onChangeText={handleFoodInputChange}
         />
         <TouchableHighlight style={styles.button} onPress={fetchData}>
-          <Text>Search</Text>
+          <FontAwesome name="search" size={24} color="black" />
         </TouchableHighlight>
         <View style={styles.fetchedFood}>
           <View style={styles.fetchedText}>
@@ -187,16 +197,22 @@ export default function FoodPage() {
             )}
           </View>
           <TouchableHighlight style={styles.Button2} onPress={addingData}>
-            <Text>+</Text>
+            <AntDesign name="checkcircle" size={24} color="black" />
           </TouchableHighlight>
           <TouchableHighlight style={styles.Button2} onPress={removeData}>
-            <Text>x</Text>
+            <AntDesign name="closecircle" size={24} color="black" />
           </TouchableHighlight>
         </View>
         <View>
           <Text>
-            Todays nutritions: Cal:{Math.round(calories)} Pro:{Math.round(proteins)} Fat:{Math.round(fats)} Car:{Math.round(carbs)} Fib:{Math.round(fibers)}
+            Todays nutritions: Cal:{Math.round(calories)} Pro:
+            {Math.round(proteins)} Fat:{Math.round(fats)} Car:
+            {Math.round(carbs)} Fib:{Math.round(fibers)}
           </Text>
+        </View>
+        <View style={styles.bottomIcons}>
+          <AntDesign name="infocirlce" size={24} color="black" />
+          <AntDesign name="user" size={24} color="black" />
         </View>
       </View>
     </>

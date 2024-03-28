@@ -1,5 +1,10 @@
 import FoodPage from "./assets/pages/FoodPage/FoodPage";
 import FitPage from "./assets/pages/FitPage/FitPage";
+/* npm i*/
+/* npm i expo */
+/* npm install @react-native-async-storage/async-storage*/
+import * as Font from "expo-font";
+import { AppLoading } from "expo";
 import {
   ScrollView,
   View,
@@ -8,16 +13,18 @@ import {
   Text,
   TextInput,
 } from "react-native";
+import { useState } from "react";
 
 export default function App() {
-  var deviceWidth = Dimensions.get("window").width;
+  const deviceWidth = Dimensions.get("window").width;
+
   const styles = StyleSheet.create({
     mainContainer: {
       flex: 1,
       width: deviceWidth,
     },
-
   });
+
   return (
     <>
       <View style={styles.mainContainer}>
@@ -27,8 +34,8 @@ export default function App() {
           showsHorizontalScrollIndicator={false}
         >
           <View key={1}>{FoodPage()}</View>
-          
-          <View key={2}>{FitPage()}</View>          
+
+          <View key={2}>{FitPage()}</View>
         </ScrollView>
       </View>
     </>
