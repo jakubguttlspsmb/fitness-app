@@ -15,7 +15,9 @@ import { useEffect } from "react";
 npm i
 npm i expo
 npm i react-native
-npm i @react-native-async-storage/async-storage*/
+npm i @react-native-async-storage/async-storage
+npm start*/
+
 export default function App() {
   const deviceWidth = Dimensions.get("window").width;
 
