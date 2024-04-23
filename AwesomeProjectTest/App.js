@@ -33,8 +33,8 @@ export default function App() {
           pagingEnabled={true}
           showsHorizontalScrollIndicator={false}
         >
-          <View key={1}>{FitPage()}</View>
-          <View key={2}>{FoodPage()}</View>
+          <View key={1}>{FoodPage()}</View>
+          <View key={2}>{FitPage()}</View>
         </ScrollView>
       </View>
     </>

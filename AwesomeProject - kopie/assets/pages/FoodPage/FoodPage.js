@@ -25,8 +25,8 @@ export default function FoodPage() {
   const [proteins, setProteins] = useState(0);
   const [carbs, setCarbs] = useState(0);
   const [fibers, setFibers] = useState(0);
-  const [values, setValues] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [infoOpen, setinfoOpen] = useState(false);
+  const [olderData, setOlderData] = useState([]);
 
   const handleFoodInputChange = (text) => {
     setFood(text);
@@ -75,64 +75,28 @@ export default function FoodPage() {
     }
   };
 
-  const saveValues = () => {
-    const newNote = {
-      id: Date.now(),
-      calories,
-      proteins,
-      fats,
-      fibers,
-      carbs,
-      data: Date().toLocaleString(),
-    };
-    setValues([...values, newNote]);
-    setCalories(0);
-    setProteins(0);
-    setFats(0);
-    setFibers(0);
-    setCarbs(0);
-  };
-  const getData = async () => {
+  const saveData = async (calories, proteins, fats, fibers, carbs) => {
     try {
-      const jsonValues = await AsyncStorage.getItem("dayFoodValue");
-      const jsonValues2 = JSON.parse(jsonValues);
-      if (jsonValues2 !== null) {
-        setValues(jsonValues2);
-      }
-    } catch (e) {
-      alert(e);
-    } finally {
-      setLoading(false);
-      console.log(values);
+      const currentDate = new Date();
+      const key = `${currentDate.getFullYear()}-${
+        currentDate.getMonth() + 1
+      }-${currentDate.getDate()}`;
+      const time = currentDate.getTime();
+      await AsyncStorage.setItem(
+        key,
+        JSON.stringify({ calories, proteins, fats, fibers, carbs, time })
+      );
+    } catch (error) {
+      console.error("Error saving data:", error);
     }
   };
 
-  const storeData = async () => {
-    if (!loading) {
-      try {
-        const jsonValues = await AsyncStorage.setItem(
-          "dayFoodValue",
-          JSON.stringify(values)
-        );
-        return jsonValues;
-      } catch (e) {
-        alert(e);
-      }
-    }
-  };
-  const removeDayValue = (note) => {
-    const updateRemoveNote = values.filter((item) => item.id !== note.id);
-    console.log(updateRemoveNote);
-    setValues(updateRemoveNote);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    storeData();
-  }, [values]);
+  function toInfo() {
+    setinfoOpen(true);
+  }
+  function returnToMain() {
+    setinfoOpen(false);
+  }
 
   const styles = StyleSheet.create({
     container: {
@@ -147,7 +111,7 @@ export default function FoodPage() {
       width: width - 50,
       paddingTop: 8,
       paddingBottom: 8,
-      fontWeight: "bold",
+      fontWeight: "500",
 
       paddingLeft: 15,
     },
@@ -156,7 +120,7 @@ export default function FoodPage() {
     },
     textLook: {
       color: "black",
-      fontWeight: "bold",
+      fontWeight: "500",
     },
     button: {
       backgroundColor: "white",
@@ -176,7 +140,7 @@ export default function FoodPage() {
       display: visible,
       height: "30%",
       marginTop: "5%",
-      fontWeight: "bold",
+      fontWeight: "500",
       borderWidth: 1,
       borderColor: "black",
     },
@@ -187,24 +151,28 @@ export default function FoodPage() {
       alignItems: "center",
     },
     olderDatastyle: { height: "40%" },
-    fetchedText: { color: "black", fontWeight: "bold" },
+    bottomIcons: { justifyContent: "center", marginTop: "100%" },
+    fetchedText: { color: "black", fontWeight: "500" },
     scrollContent: { alignItems: "center" },
-    head: { marginTop: "10%", fontSize: 25, fontWeight: "bold" },
+    head: { marginTop: "10%", fontSize: 25, fontWeight: "500" },
     todayDataContainer: { marginBottom: "5%", marginTop: "5%" },
-    text: {
-      textAlign: "center",
-      fontSize: 18,
-      fontWeight: "bold",
-    },
-    finalView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "black",
-      borderRadius: 10,
-      margin: 4,
-    },
   });
+
+  if (infoOpen === true) {
+    return (
+      <>
+        <StatusBar hidden></StatusBar>
+        <View style={styles.container}>
+          <Text style={styles.head}>Info</Text>
+          <View style={styles.bottomIcons}>
+            <Pressable onPress={returnToMain}>
+              <FontAwesome name="search" size={35} color="black" />
+            </Pressable>
+          </View>
+        </View>
+      </>
+    );
+  }
 
   return (
     <>
@@ -254,7 +222,7 @@ export default function FoodPage() {
         </View>
         <View>
           <View style={styles.todayDataContainer}>
-            <Text style={styles.text}>
+            <Text style={styles.todayDataText}>
               Today's Nutritional Data: {"\n"}
               Calories: {Math.round(calories)} {"\n"}
               Proteins: {Math.round(proteins)} {"\n"}
@@ -263,26 +231,30 @@ export default function FoodPage() {
               Fibers: {Math.round(fibers)}
             </Text>
           </View>
-          <TouchableHighlight style={styles.button} onPress={saveValues}>
-            <Text style={styles.text}>Save today data</Text>
+          <TouchableHighlight style={styles.button} onPress={""}>
+            <Text>Save today data</Text>
           </TouchableHighlight>
-          <ScrollView style={styles.ScrollViewStyle}>
-            {values.map((note) => (
-              <Pressable
-                style={styles.dataValue}
-                key={`${note.id}`}
-                onLongPress={() => removeDayValue(note)}
-              >
-                <View style={styles.finalView}>
-                  <Text style={styles.finalText}>Calories of the day</Text>
-                </View>
-                <Text style={styles.dataText}>{note.data}</Text>
-                <Text style={styles.text}>{note.calories} calories</Text>
-                <Text style={styles.text}>{note.proteins} proteins</Text>
-                <Text style={styles.text}>{note.carbs} carbs</Text>
-                <Text style={styles.text}>{note.fibers} fibers</Text>
-              </Pressable>
+          <TouchableHighlight style={styles.button} onPress={""}>
+            <Text>Save today data</Text>
+          </TouchableHighlight>
+          <ScrollView style={styles.olderDatastyle}>
+            {olderData.map((item, index) => (
+              <View key={index} style={styles.olderDayDataContainer}>
+                <Text style={styles.olderDayDataText}>
+                  {item.date}: {"\n"}
+                  Calories: {Math.round(item.data.calories)} {"\n"}
+                  Proteins: {Math.round(item.data.proteins)} {"\n"}
+                  Fats: {Math.round(item.data.fats)} {"\n"}
+                  Carbohydrates: {Math.round(item.data.carbs)} {"\n"}
+                  Fibers: {Math.round(item.data.fibers)}
+                </Text>
+              </View>
             ))}
+            <View style={styles.bottomIcons}>
+              <Pressable onPress={toInfo}>
+                <AntDesign name="infocirlce" size={35} color="black" />
+              </Pressable>
+            </View>
           </ScrollView>
         </View>
       </View>
