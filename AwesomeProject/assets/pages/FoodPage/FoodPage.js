@@ -141,6 +141,10 @@ export default function FoodPage() {
       height: height,
       backgroundColor: "yellow",
     },
+    ScrollViewStyle: {
+      width: "100%",
+      marginTop: 5,
+    },
     input: {
       marginTop: height * 0.05,
       backgroundColor: "white",
@@ -204,6 +208,22 @@ export default function FoodPage() {
       borderRadius: 10,
       margin: 4,
     },
+    data: {
+      margin: 20,
+      padding: 5,
+    },
+    finalText: {
+      margin: 10,
+      textAlign: "center",
+      fontSize: 25,
+      fontWeight: "500",
+      color: "white",
+    },
+    dataText: {
+      textAlign: "center",
+      fontSize: 13,
+      fontWeight: "500",
+    },
   });
 
   return (
@@ -252,7 +272,7 @@ export default function FoodPage() {
             <AntDesign name="closecircle" size={80} color="white" />
           </TouchableHighlight>
         </View>
-        <View>
+
           <View style={styles.todayDataContainer}>
             <Text style={styles.text}>
               Today's Nutritional Data: {"\n"}
@@ -266,10 +286,11 @@ export default function FoodPage() {
           <TouchableHighlight style={styles.button} onPress={saveValues}>
             <Text style={styles.text}>Save today data</Text>
           </TouchableHighlight>
+          <View>
           <ScrollView style={styles.ScrollViewStyle}>
             {values.map((note) => (
               <Pressable
-                style={styles.dataValue}
+                style={styles.data}
                 key={`${note.id}`}
                 onLongPress={() => removeDayValue(note)}
               >
