@@ -26,6 +26,8 @@ export default function FoodPage() {
   const [visible, setVisible] = useState("none");
   const [visible2, setVisible2] = useState("none");
   const [visible3, setVisible3] = useState("none");
+  const [visible4, setVisible4] = useState("none");
+  const [visible5, setVisible5] = useState("none");
   const [infoOpen, setinfoOpen] = useState(false);
 
   const handletimeChange = (time) => {
@@ -129,6 +131,20 @@ export default function FoodPage() {
       setVisible3("none");
     }
   };
+  const legWorkout = () => {
+    if (visible4 === "none") {
+      setVisible4("flex");
+    } else {
+      setVisible4("none");
+    }
+  };
+  const armWorkout = () => {
+    if (visible5 === "none") {
+      setVisible5("flex");
+    } else {
+      setVisible5("none");
+    }
+  };
   function toInfo() {
     setinfoOpen(true);
   }
@@ -154,7 +170,7 @@ export default function FoodPage() {
       alignContent: "center",
       width: deviceHeight / 2,
     },
-    headerText: {
+    head: {
       fontSize: 40,
       fontWeight: "500",
       textAlign: "center",
@@ -168,11 +184,11 @@ export default function FoodPage() {
       borderColor: "black",
       backgroundColor: "#ee9b01",
     },
-    submitText: {
+    textB: {
       textAlign: "center",
       fontSize: 25,
     },
-    headerContainer: {
+    headContainer: {
       paddingTop: 30,
       width: "100%",
     },
@@ -185,7 +201,7 @@ export default function FoodPage() {
       alignContent: "center",
       height: 50,
     },
-    dataValue: {
+    data: {
       margin: 20,
       padding: 5,
     },
@@ -231,6 +247,16 @@ export default function FoodPage() {
     cardioButtonsContainer: {
       flexDirection: "row",
       display: visible3,
+      width: deviceWidth / 1.55,
+    },
+    legWorkoutButtonsContainer: {
+      flexDirection: "row",
+      display: visible4,
+      width: deviceWidth / 1.55,
+    },
+    armWorkoutButtonsContainer: {
+      flexDirection: "row",
+      display: visible5,
       width: deviceWidth / 1.55,
     },
 
@@ -292,7 +318,7 @@ export default function FoodPage() {
             <Text>Burned:{Math.round(calories)}cal</Text>
 
             <Pressable style={styles.buttons} onPress={backWorkout}>
-              <Text style={styles.submitText}>Backworkout</Text>
+              <Text style={styles.textB}>Backworkout</Text>
             </Pressable>
             <View style={styles.backWorkoutButtonsContainer}>
               <Pressable
@@ -321,7 +347,7 @@ export default function FoodPage() {
               </Pressable>
             </View>
             <Pressable style={styles.buttons} onPress={chestWorkout}>
-              <Text style={styles.submitText}>Chestworkout</Text>
+              <Text style={styles.textB}>Chestworkout</Text>
             </Pressable>
             <View style={styles.chestWorkoutButtonsContainer}>
               <Pressable
@@ -350,7 +376,7 @@ export default function FoodPage() {
               </Pressable>
             </View>
             <Pressable style={styles.buttons} onPress={cardio}>
-              <Text style={styles.submitText}>Cardio</Text>
+              <Text style={styles.textB}>Cardio</Text>
             </Pressable>
             <View style={styles.cardioButtonsContainer}>
               <Pressable
@@ -378,15 +404,75 @@ export default function FoodPage() {
                 </View>
               </Pressable>
             </View>
+            <Pressable style={styles.buttons} onPress={legWorkout}>
+              <Text style={styles.textB}>LegWorkout</Text>
+            </Pressable>
+            <View style={styles.legWorkoutButtonsContainer}>
+              <Pressable
+                style={styles.workoutButtons}
+                onPress={() => setMET(5)}
+              >
+                <View>
+                  <Text>Squat</Text>
+                </View>
+              </Pressable>
+              <Pressable
+                style={styles.workoutButtons}
+                onPress={() => setMET(5)}
+              >
+                <View>
+                  <Text>Leg Press</Text>
+                </View>
+              </Pressable>
+              <Pressable
+                style={styles.workoutButtons}
+                onPress={() => setMET(3.5)}
+              >
+                <View>
+                  <Text>Leg Extensions</Text>
+                </View>
+              </Pressable>
+            </View>
+
+            <Pressable style={styles.buttons} onPress={armWorkout}>
+              <Text style={styles.textB}>ArmWorkout</Text>
+            </Pressable>
+            <View style={styles.armWorkoutButtonsContainer}>
+              <Pressable
+                style={styles.workoutButtons}
+                onPress={() => setMET(3.5)}
+              >
+                <View>
+                  <Text>Bicep Curls</Text>
+                </View>
+              </Pressable>
+              <Pressable
+                style={styles.workoutButtons}
+                onPress={() => setMET(3.5)}
+              >
+                <View>
+                  <Text>Tricep Extensions</Text>
+                </View>
+              </Pressable>
+              <Pressable
+                style={styles.workoutButtons}
+                onPress={() => setMET(4.5)}
+              >
+                <View>
+                  <Text>Push-Ups</Text>
+                </View>
+              </Pressable>
+            </View>
+            
 
             <Pressable style={styles.buttons} onPress={submitValues}>
-              <Text style={styles.submitText}>submit calories</Text>
+              <Text style={styles.textB}>submit calories</Text>
             </Pressable>
             <Pressable style={styles.buttons} onPress={saveValues}>
-              <Text style={styles.submitText}>submit todays values</Text>
+              <Text style={styles.textB}>submit todays values</Text>
             </Pressable>
             <Pressable style={styles.buttons} onPress={closeDataInput}>
-              <Text style={styles.submitText}>close</Text>
+              <Text style={styles.textB}>close</Text>
             </Pressable>
           </View>
         </View>
@@ -414,8 +500,8 @@ export default function FoodPage() {
   return (
     <>
       <View style={styles.farBackView}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Fit </Text>
+        <View style={styles.headContainer}>
+          <Text style={styles.head}>Fit </Text>
           <View style={styles.icons}>
             <Pressable onPress={toInfo}>
               <AntDesign name="infocirlce" size={20} color="black" />
@@ -424,12 +510,12 @@ export default function FoodPage() {
         </View>
         <View style={styles.container}>
           <Pressable style={styles.buttons} onPress={showDataInput}>
-            <Text style={styles.submitText}>Add New Day</Text>
+            <Text style={styles.textB}>Add New Day</Text>
           </Pressable>
           <ScrollView style={styles.ScrollViewStyle}>
             {values.map((note) => (
               <Pressable
-                style={styles.dataValue}
+                style={styles.data}
                 key={`${note.id}`}
                 onLongPress={() => removeDayValue(note)}
               >
