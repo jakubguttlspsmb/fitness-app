@@ -158,7 +158,7 @@ export default function FoodPage() {
     setValues(updateRemoveNote);
   };
   const styles = StyleSheet.create({
-    farBackView: {
+    view2: {
       backgroundColor: "orange",
       width: deviceWidth,
       height: deviceHeight,
@@ -195,11 +195,6 @@ export default function FoodPage() {
     ScrollViewStyle: {
       width: "100%",
       marginTop: 5,
-    },
-    ScrollViewStyle2: {
-      width: "100%",
-      alignContent: "center",
-      height: 50,
     },
     data: {
       margin: 20,
@@ -293,7 +288,7 @@ export default function FoodPage() {
 
   if (open === true) {
     return (
-      <View style={styles.farBackView}>
+      <View style={styles.view2}>
         <View style={styles.container}>
           <View>
             <Text style={styles.calclatedNumber}>
@@ -463,7 +458,6 @@ export default function FoodPage() {
                 </View>
               </Pressable>
             </View>
-            
 
             <Pressable style={styles.buttons} onPress={submitValues}>
               <Text style={styles.textB}>submit calories</Text>
@@ -499,7 +493,7 @@ export default function FoodPage() {
 
   return (
     <>
-      <View style={styles.farBackView}>
+      <View style={styles.view2}>
         <View style={styles.headContainer}>
           <Text style={styles.head}>Fit </Text>
           <View style={styles.icons}>
@@ -510,7 +504,7 @@ export default function FoodPage() {
         </View>
         <View style={styles.container}>
           <Pressable style={styles.buttons} onPress={showDataInput}>
-            <Text style={styles.textB}>Add New Day</Text>
+            <Text style={styles.textB}>Add New Data</Text>
           </Pressable>
           <ScrollView style={styles.ScrollViewStyle}>
             {values.map((note) => (
@@ -520,7 +514,7 @@ export default function FoodPage() {
                 onLongPress={() => removeDayValue(note)}
               >
                 <View style={styles.finalView}>
-                  <Text style={styles.finalText}>Calories of the day</Text>
+                  <Text style={styles.finalText}>Your calories</Text>
                 </View>
                 <Text style={styles.dataText}>{note.data}</Text>
                 <Text style={styles.text}>

@@ -144,6 +144,7 @@ export default function FoodPage() {
     ScrollViewStyle: {
       width: "100%",
       marginTop: 5,
+      height: height / 4,
     },
     input: {
       marginTop: height * 0.05,
@@ -200,25 +201,11 @@ export default function FoodPage() {
       fontSize: 18,
       fontWeight: "bold",
     },
-    finalView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "black",
-      borderRadius: 10,
-      margin: 4,
-    },
     data: {
       margin: 20,
       padding: 5,
     },
-    finalText: {
-      margin: 10,
-      textAlign: "center",
-      fontSize: 25,
-      fontWeight: "500",
-      color: "white",
-    },
+
     dataText: {
       textAlign: "center",
       fontSize: 13,
@@ -273,30 +260,27 @@ export default function FoodPage() {
           </TouchableHighlight>
         </View>
 
-          <View style={styles.todayDataContainer}>
-            <Text style={styles.text}>
-              Today's Nutritional Data: {"\n"}
-              Calories: {Math.round(calories)} {"\n"}
-              Proteins: {Math.round(proteins)} {"\n"}
-              Fats: {Math.round(fats)} {"\n"}
-              Carbohydrates: {Math.round(carbs)} {"\n"}
-              Fibers: {Math.round(fibers)}
-            </Text>
-          </View>
-          <TouchableHighlight style={styles.button} onPress={saveValues}>
-            <Text style={styles.text}>Save today data</Text>
-          </TouchableHighlight>
-          <View>
-          <ScrollView style={styles.ScrollViewStyle}>
+        <View style={styles.todayDataContainer}>
+          <Text style={styles.text}>
+            Today's Nutritional Data: {"\n"}
+            Calories: {Math.round(calories)} {"\n"}
+            Proteins: {Math.round(proteins)} {"\n"}
+            Fats: {Math.round(fats)} {"\n"}
+            Carbohydrates: {Math.round(carbs)} {"\n"}
+            Fibers: {Math.round(fibers)}
+          </Text>
+        </View>
+        <TouchableHighlight style={styles.button} onPress={saveValues}>
+          <Text style={styles.text}>Save today data</Text>
+        </TouchableHighlight>
+        <View style={styles.ScrollViewStyle}>
+          <ScrollView>
             {values.map((note) => (
               <Pressable
                 style={styles.data}
                 key={`${note.id}`}
                 onLongPress={() => removeDayValue(note)}
               >
-                <View style={styles.finalView}>
-                  <Text style={styles.finalText}>Calories of the day</Text>
-                </View>
                 <Text style={styles.dataText}>{note.data}</Text>
                 <Text style={styles.text}>{note.calories} calories</Text>
                 <Text style={styles.text}>{note.proteins} proteins</Text>

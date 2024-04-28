@@ -16,7 +16,10 @@ npm i
 npm i expo
 npm i react-native
 npm i @react-native-async-storage/async-storage
-npm start*/
+npx expo login 
+npm start
+naskenuj qr kod na mobilu
+*/
 
 export default function App() {
   const deviceWidth = Dimensions.get("window").width;
