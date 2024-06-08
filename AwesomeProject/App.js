@@ -11,6 +11,8 @@ import {
   ScrollView,
 } from "react-native";
 import { useEffect } from "react";
+import { MongoClient } from "mongodb";
+
 /*
 npm i
 npm i expo
@@ -20,6 +22,15 @@ npx expo login
 npm start
 naskenuj qr kod na mobilu
 */
+export async function getStaticProps(){
+  const mongoClient = new MongoClient(
+    "mongodb+srv://admin:admin@cluster0.pj1sbdh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  );
+  const data = await mongoClient.db().collection("food").find({}).toArray();
+
+  console.log(">>>", data);
+};
+
 
 export default function App() {
   const deviceWidth = Dimensions.get("window").width;
